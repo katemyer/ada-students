@@ -1,24 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import NewStudentForm from './components/NewStudentForm';
+import StudentCollection from './components/StudentCollection';
 import './App.css';
 
-function App() {
+const students = [
+  {
+    id: 1,
+    fullName: "Ada Lovelace",
+    email: "ada@lovelace.uk",
+    present: true,
+  },
+  {
+    id: 2,
+    fullName: "Katherine Johnson",
+    email: "kat@nasa.gov",
+    present: false,
+  },
+];
+
+function App () {
+  console.log('rendering');
+  const [studentList, setStudentList] = useState(students);
+
+  const updateStudent = (updatedStudent) => {
+    const students = [];
+
+    studentList.forEach((student) => {
+      if (student.id === updatedStudent.id) {
+        students.push(updatedStudent);
+      } else {
+        students.push(student);
+      }
+    });
+
+    setStudentList(students);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <StudentCollection students={studentList} onUpdateStudent={updateStudent} />
+      <NewStudentForm />
     </div>
   );
 }
